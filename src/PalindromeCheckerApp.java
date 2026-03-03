@@ -1,33 +1,36 @@
 public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
-        String word = "radar";
 
-        // Check palindrome using recursion
-        boolean isPalindrome = isPalindromeRecursive(word, 0, word.length() - 1);
+        String word = "A man a plan a canal Panama";
 
-        // Display result
+        // Step 1: Normalize string
+        String normalized = word.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+
+        // Step 2: Check palindrome using two-pointer logic
+        boolean isPalindrome = isPalindrome(normalized);
+
+        // Step 3: Display result
         if (isPalindrome) {
-            System.out.println(word + " is a Palindrome.");
+            System.out.println("\"" + word + "\" is a Palindrome (case & spaces ignored).");
         } else {
-            System.out.println(word + " is NOT a Palindrome.");
+            System.out.println("\"" + word + "\" is NOT a Palindrome.");
         }
     }
 
-    // Recursive method
-    public static boolean isPalindromeRecursive(String word, int start, int end) {
+    // Two-pointer palindrome check
+    public static boolean isPalindrome(String str) {
+        int start = 0;
+        int end = str.length() - 1;
 
-        // Base condition
-        if (start >= end) {
-            return true;
+        while (start < end) {
+            if (str.charAt(start) != str.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
         }
 
-        // Compare first and last characters
-        if (word.charAt(start) != word.charAt(end)) {
-            return false;
-        }
-
-        // Recursive call for substring excluding first and last characters
-        return isPalindromeRecursive(word, start + 1, end - 1);
+        return true;
     }
 }
