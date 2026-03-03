@@ -1,13 +1,20 @@
+import java.util.Stack;
+import java.util.Queue;
+import java.util.LinkedList;
+
 public class PalindromeCheckerApp {
 
-    public static void main(String[] args) {
-        // Display application details
-        System.out.println("=================================");
-        System.out.println("     PALINDROME CHECKER APP      ");
-        System.out.println("           Version 1.0           ");
-        System.out.println("=================================");
+    public static boolean checkUsingSimpleReverse(String word) {
+        String reversed = "";
+        for (int i = word.length() - 1; i >= 0; i--) {
+            reversed += word.charAt(i);
+        }
+        return word.equals(reversed);
+    }
 
-        // Continue to next use case
-        // (Palindrome processing logic will follow)
+
+    public static void main(String[] args) {
+
+        System.out.println(checkUsingSimpleReverse("abba"));
     }
 }
