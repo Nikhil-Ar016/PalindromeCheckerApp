@@ -1,36 +1,59 @@
+import java.util.Stack;
+
+class PalindromeChecker {
+
+    // Private constructor not needed since all methods are instance methods
+    // Internal data structures are hidden
+    private Stack<Character> stack;
+
+    public PalindromeChecker() {
+        stack = new Stack<>();
+    }
+
+    // Public method to check palindrome
+    public boolean checkPalindrome(String word) {
+
+        // Clear stack if reused
+        stack.clear();
+
+        // Push all characters into the stack
+        for (char c : word.toCharArray()) {
+            stack.push(c);
+        }
+
+        // Compare characters by popping
+        for (int i = 0; i < word.length(); i++) {
+            if (word.charAt(i) != stack.pop()) {
+                return false; // Not a palindrome
+            }
+        }
+
+        return true; // Palindrome
+    }
+}
+
+// Main application class
 public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
-        String word = "A man a plan a canal Panama";
+        PalindromeChecker checker = new PalindromeChecker();
 
-        // Step 1: Normalize string
-        String normalized = word.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        String word1 = "radar";
+        String word2 = "hello";
 
-        // Step 2: Check palindrome using two-pointer logic
-        boolean isPalindrome = isPalindrome(normalized);
-
-        // Step 3: Display result
-        if (isPalindrome) {
-            System.out.println("\"" + word + "\" is a Palindrome (case & spaces ignored).");
+        System.out.println("Checking: " + word1);
+        if (checker.checkPalindrome(word1)) {
+            System.out.println(word1 + " is a Palindrome.");
         } else {
-            System.out.println("\"" + word + "\" is NOT a Palindrome.");
-        }
-    }
-
-    // Two-pointer palindrome check
-    public static boolean isPalindrome(String str) {
-        int start = 0;
-        int end = str.length() - 1;
-
-        while (start < end) {
-            if (str.charAt(start) != str.charAt(end)) {
-                return false;
-            }
-            start++;
-            end--;
+            System.out.println(word1 + " is NOT a Palindrome.");
         }
 
-        return true;
+        System.out.println("\nChecking: " + word2);
+        if (checker.checkPalindrome(word2)) {
+            System.out.println(word2 + " is a Palindrome.");
+        } else {
+            System.out.println(word2 + " is NOT a Palindrome.");
+        }
     }
 }
