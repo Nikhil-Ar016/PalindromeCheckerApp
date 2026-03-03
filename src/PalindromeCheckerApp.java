@@ -1,59 +1,66 @@
-import java.util.Stack;
+import java.util.Scanner;
 
-class PalindromeChecker {
-
-    // Private constructor not needed since all methods are instance methods
-    // Internal data structures are hidden
-    private Stack<Character> stack;
-
-    public PalindromeChecker() {
-        stack = new Stack<>();
-    }
-
-    // Public method to check palindrome
-    public boolean checkPalindrome(String word) {
-
-        // Clear stack if reused
-        stack.clear();
-
-        // Push all characters into the stack
-        for (char c : word.toCharArray()) {
-            stack.push(c);
-        }
-
-        // Compare characters by popping
-        for (int i = 0; i < word.length(); i++) {
-            if (word.charAt(i) != stack.pop()) {
-                return false; // Not a palindrome
-            }
-        }
-
-        return true; // Palindrome
-    }
-}
-
-// Main application class
 public class PalindromeCheckerApp {
 
+    // Approach 1: Using StringBuilder reverse
+    public static boolean isPalindromeUsingStringBuilder(String str) {
+        String reversed = new StringBuilder(str).reverse().toString();
+        return str.equals(reversed);
+    }
+
+    // Approach 2: Using two-pointer technique
+    public static boolean isPalindromeTwoPointer(String str) {
+        int left = 0;
+        int right = str.length() - 1;
+        while (left < right) {
+            if (str.charAt(left) != str.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+
+    // Approach 3: Recursive approach
+    public static boolean isPalindromeRecursive(String str) {
+        return checkPalindromeRecursive(str, 0, str.length() - 1);
+    }
+
+    private static boolean checkPalindromeRecursive(String str, int left, int right) {
+        if (left >= right) return true;
+        if (str.charAt(left) != str.charAt(right)) return false;
+        return checkPalindromeRecursive(str, left + 1, right - 1);
+    }
+
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
 
-        PalindromeChecker checker = new PalindromeChecker();
+        System.out.println("=== Palindrome Checker Performance Comparison ===");
+        System.out.print("Enter a string to check: ");
+        String input = scanner.nextLine().replaceAll("\\s+", "").toLowerCase(); // remove spaces & lowercase
 
-        String word1 = "radar";
-        String word2 = "hello";
+        // Run and measure Approach 1
+        long start1 = System.nanoTime();
+        boolean result1 = isPalindromeUsingStringBuilder(input);
+        long end1 = System.nanoTime();
 
-        System.out.println("Checking: " + word1);
-        if (checker.checkPalindrome(word1)) {
-            System.out.println(word1 + " is a Palindrome.");
-        } else {
-            System.out.println(word1 + " is NOT a Palindrome.");
-        }
+        // Run and measure Approach 2
+        long start2 = System.nanoTime();
+        boolean result2 = isPalindromeTwoPointer(input);
+        long end2 = System.nanoTime();
 
-        System.out.println("\nChecking: " + word2);
-        if (checker.checkPalindrome(word2)) {
-            System.out.println(word2 + " is a Palindrome.");
-        } else {
-            System.out.println(word2 + " is NOT a Palindrome.");
-        }
+        // Run and measure Approach 3
+        long start3 = System.nanoTime();
+        boolean result3 = isPalindromeRecursive(input);
+        long end3 = System.nanoTime();
+
+        // Display results
+        System.out.println("\nResults:");
+        System.out.println("1. StringBuilder Reverse: " + result1 + " (Time: " + (end1 - start1) + " ns)");
+        System.out.println("2. Two-Pointer Method: " + result2 + " (Time: " + (end2 - start2) + " ns)");
+        System.out.println("3. Recursive Method: " + result3 + " (Time: " + (end3 - start3) + " ns)");
+
+        scanner.close();
     }
 }
