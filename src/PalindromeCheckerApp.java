@@ -1,24 +1,10 @@
 public class PalindromeCheckerApp {
 
-    // Node class for singly linked list
-    static class Node {
-        char data;
-        Node next;
-
-        Node(char data) {
-            this.data = data;
-            this.next = null;
-        }
-    }
-
     public static void main(String[] args) {
-        String word = "level";
+        String word = "radar";
 
-        // Step 1: Convert string to linked list
-        Node head = createLinkedList(word);
-
-        // Step 2: Check palindrome
-        boolean isPalindrome = isPalindromeLinkedList(head);
+        // Check palindrome using recursion
+        boolean isPalindrome = isPalindromeRecursive(word, 0, word.length() - 1);
 
         // Display result
         if (isPalindrome) {
@@ -28,67 +14,20 @@ public class PalindromeCheckerApp {
         }
     }
 
-    // Create singly linked list from string
-    public static Node createLinkedList(String word) {
-        Node head = null;
-        Node tail = null;
-        for (char c : word.toCharArray()) {
-            Node newNode = new Node(c);
-            if (head == null) {
-                head = newNode;
-                tail = newNode;
-            } else {
-                tail.next = newNode;
-                tail = newNode;
-            }
-        }
-        return head;
-    }
+    // Recursive method
+    public static boolean isPalindromeRecursive(String word, int start, int end) {
 
-    // Check palindrome using fast/slow pointer & reverse
-    public static boolean isPalindromeLinkedList(Node head) {
-        if (head == null || head.next == null) return true;
-
-        // Find middle using fast & slow
-        Node slow = head;
-        Node fast = head;
-        while (fast.next != null && fast.next.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
+        // Base condition
+        if (start >= end) {
+            return true;
         }
 
-        // Reverse second half
-        Node secondHalf = reverseList(slow.next);
-
-        // Compare first and second halves
-        Node firstHalf = head;
-        Node secondHalfCopy = secondHalf; // to restore later if needed
-        boolean isPalindrome = true;
-        while (secondHalf != null) {
-            if (firstHalf.data != secondHalf.data) {
-                isPalindrome = false;
-                break;
-            }
-            firstHalf = firstHalf.next;
-            secondHalf = secondHalf.next;
+        // Compare first and last characters
+        if (word.charAt(start) != word.charAt(end)) {
+            return false;
         }
 
-        // Optional: restore list
-        slow.next = reverseList(secondHalfCopy);
-
-        return isPalindrome;
-    }
-
-    // Reverse linked list
-    public static Node reverseList(Node head) {
-        Node prev = null;
-        Node curr = head;
-        while (curr != null) {
-            Node nextNode = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = nextNode;
-        }
-        return prev;
+        // Recursive call for substring excluding first and last characters
+        return isPalindromeRecursive(word, start + 1, end - 1);
     }
 }
